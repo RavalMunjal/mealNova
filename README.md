@@ -25,22 +25,37 @@ MealNova solves these problems by giving full control of daily meals to users an
 
 ---
 
+## 🍱 Tiffin Service — How We Solve It
+
+Many tiffin service providers struggle with managing daily orders, tracking customers, and reducing food waste. MealNova provides a complete solution:
+
+| Problem | Our Solution |
+|---|---|
+| 📋 No order tracking | Users can place, skip, or pause tiffin orders in advance |
+| 🍽️ Fixed menu every day | Vendors can update daily menu; users can customize their meals |
+| 💸 Payment confusion | Subscription-based system with clear billing & history |
+| 🗑️ Food wastage | Real-time demand dashboard helps vendors prepare exact quantities |
+| 📞 No feedback system | Users can rate meals and give direct feedback to tiffin providers |
+| 📍 Hard to discover tiffin services | Location-based vendor matching connects users with nearby tiffin providers |
+
+---
 ## ⚙️ Tech Stack
 
 ### Frontend
-- React.js  
-- HTML5  
-- CSS3  
+- React.js
+- Tailwind CSS (or CSS Modules)
 
 ### Backend
-- Node.js  
-- Express.js  
+- Node.js
+- Express.js
 
 ### Database
-- MongoDB  
+- MongoDB
+- Mongoose (ODM)
 
 ### Design
 - Figma (UI/UX Prototype)
+
 
 ---
 
@@ -84,5 +99,3 @@ MealNova solves these problems by giving full control of daily meals to users an
 ## 🎯 Goal
 
 To create a smart food system where users can control what they eat daily, while hostels and vendors can manage food supply efficiently and reduce waste.
-
----
