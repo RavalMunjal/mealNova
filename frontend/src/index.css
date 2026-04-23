@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 34 100% 97%; /* #FFF8F0 */
+    --foreground: 233 28% 14%; /* #1A1A2E */
+
+    --card: 0 0% 100%;
+    --card-foreground: 233 28% 14%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 233 28% 14%;
+ 
+    --primary: 16 100% 60%; /* #FF6B35 */
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 254 59% 26%; /* #2D1B69 */
+    --secondary-foreground: 0 0% 100%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 165 100% 39%; /* #00C896 */
+    --accent-foreground: 0 0% 100%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 16 100% 60%;
+ 
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 249 41% 7%; /* #0D0B1A */
+    --foreground: 34 100% 97%; /* #FFF8F0 */
+ 
+    --card: 254 59% 10%; 
+    --card-foreground: 34 100% 97%;
+ 
+    --popover: 254 59% 10%;
+    --popover-foreground: 34 100% 97%;
+ 
+    --primary: 16 100% 60%;
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 254 59% 26%;
+    --secondary-foreground: 0 0% 100%;
+ 
+    --muted: 254 59% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 165 100% 39%;
+    --accent-foreground: 0 0% 100%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 254 59% 20%;
+    --input: 254 59% 20%;
+    --ring: 16 100% 60%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* Lenis Smooth Scroll Setup */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
