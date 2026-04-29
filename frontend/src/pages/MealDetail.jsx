@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../features/cart/cartSlice';
 import { MOCK_MEALS } from '../services/mockData';
 
+import toast from 'react-hot-toast';
+
 const NutritionBar = ({ label, value, max, color }) => (
   <div>
     <div className="flex justify-between text-xs mb-1">
@@ -32,7 +34,7 @@ const MealDetail = () => {
   const meal = MOCK_MEALS.find((m) => m.id === id) || MOCK_MEALS[0];
 
   // Derived data
-  const mealPrice = Math.round(meal.calories / 10);
+  const mealPrice = meal.price || Math.round(meal.calories / 10);
   const isInCart = cartItems.some((i) => i.id === meal.id);
 
   // Static recipe detail data (enriched display)
@@ -59,7 +61,11 @@ const MealDetail = () => {
       dispatch(addToCart({ ...meal, price: mealPrice }));
     }
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    toast.success(`${qty}x ${meal.name} added to cart!`, {
+      style: { borderRadius: '10px', background: '#111827', color: '#fff' },
+      iconTheme: { primary: '#ea580c', secondary: '#fff' },
+    });
+    setTimeout(() => setAdded(false), 1500);
   };
 
   const relatedMeals = MOCK_MEALS.filter(
@@ -166,33 +172,41 @@ const MealDetail = () => {
           )}
 
           {/* Price + Quantity + Add to Cart */}
-          <div className="flex items-center gap-4 mt-auto">
-            <div className="flex items-center bg-gray-100 rounded-xl">
+          <div className="flex flex-col gap-4 mt-auto">
+            <div className="flex items-end gap-2">
+              <span className="text-gray-500 font-medium pb-1">Price:</span>
+              <span className="text-3xl font-extrabold text-orange-600">₹{mealPrice}</span>
+              {qty > 1 && <span className="text-sm text-gray-400 font-medium pb-1 ml-2">Total: ₹{mealPrice * qty}</span>}
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div className="flex items-center bg-gray-100 rounded-xl">
+                <button
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orange-600 font-bold text-lg transition-colors"
+                >
+                  −
+                </button>
+                <span className="w-8 text-center font-bold text-gray-900">{qty}</span>
+                <button
+                  onClick={() => setQty((q) => q + 1)}
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orange-600 font-bold text-lg transition-colors"
+                >
+                  +
+                </button>
+              </div>
+
               <button
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orange-600 font-bold text-lg transition-colors"
+                onClick={handleAddToCart}
+                className={`flex-1 py-3.5 px-6 rounded-xl font-bold text-base transition-all duration-200 shadow-md ${
+                  added
+                    ? 'bg-green-500 text-white scale-95'
+                    : 'bg-orange-600 text-white hover:bg-orange-700 hover:scale-[1.02]'
+                }`}
               >
-                −
-              </button>
-              <span className="w-8 text-center font-bold text-gray-900">{qty}</span>
-              <button
-                onClick={() => setQty((q) => q + 1)}
-                className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orange-600 font-bold text-lg transition-colors"
-              >
-                +
+                {added ? '✓ Added to Cart!' : `Add ${qty > 1 ? `(${qty})` : ''} to Cart`}
               </button>
             </div>
-
-            <button
-              onClick={handleAddToCart}
-              className={`flex-1 py-3.5 px-6 rounded-xl font-bold text-base transition-all duration-200 shadow-md ${
-                added
-                  ? 'bg-green-500 text-white scale-95'
-                  : 'bg-orange-600 text-white hover:bg-orange-700 hover:scale-[1.02]'
-              }`}
-            >
-              {added ? '✓ Added to Cart!' : `Add ${qty > 1 ? `(${qty})` : ''} to Cart`}
-            </button>
           </div>
         </div>
       </div>

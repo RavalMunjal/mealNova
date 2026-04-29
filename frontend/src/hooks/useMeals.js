@@ -1,15 +1,23 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilters, searchMeals } from '../features/meals/mealsSlice';
+import { MOCK_MEALS } from '../services/mockData';
 
-// Custom hook to access meals state from Redux store
+// Custom hook to access and manage meals state
 const useMeals = () => {
-  const { meals, isLoading, error, selectedMeal, filters } = useSelector((state) => state.meals);
+  const dispatch = useDispatch();
+  const { filteredMeals, allMeals, featured, activeFilters } = useSelector((state) => state.meals);
+
+  const handleSearch = (query) => dispatch(searchMeals(query));
+  const handleFilter = (filters) => dispatch(setFilters(filters));
 
   return {
-    meals,
-    isLoading,
-    error,
-    selectedMeal,
-    filters,
+    meals: filteredMeals,
+    allMeals,
+    featured,
+    activeFilters,
+    totalCount: MOCK_MEALS.length,
+    handleSearch,
+    handleFilter,
   };
 };
 
