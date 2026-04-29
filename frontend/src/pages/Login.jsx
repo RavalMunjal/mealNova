@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../features/auth/authSlice';
 import { MOCK_USERS } from '../services/mockData';
 import { validateLoginForm, validateRegisterForm } from '../utils/validators';
+import Logo from '../components/Logo';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -74,11 +75,11 @@ const Login = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-        <div className="bg-orange-600 py-8 px-8 text-center">
-          <Link to="/" className="inline-block text-3xl font-extrabold text-white tracking-tight mb-2">
-            🍱 MealNova
+        <div className="bg-gray-900 py-8 px-8 flex flex-col items-center text-center">
+          <Link to="/" className="inline-block mb-3">
+            <Logo lightText={true} />
           </Link>
-          <p className="text-orange-100">
+          <p className="text-gray-300 text-sm">
             {isSignUp ? 'Create an account to get started' : 'Welcome back! Please sign in.'}
           </p>
         </div>

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import { getInitials } from '../utils/helpers';
+import Logo from './Logo';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,11 +50,8 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-              <span className="text-2xl">🍱</span>
-              <span className="text-xl font-extrabold text-gray-900">
-                Meal<span className="text-orange-600">Nova</span>
-              </span>
+            <Link to="/" className="flex-shrink-0 flex items-center">
+              <Logo />
             </Link>
           </div>
 

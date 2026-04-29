@@ -5,6 +5,8 @@ import { setFilters, searchMeals } from '../features/meals/mealsSlice';
 import { addToCart } from '../features/cart/cartSlice';
 import { MOCK_MEALS } from '../services/mockData';
 
+import toast from 'react-hot-toast';
+
 const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Salad', 'Dessert', 'Extra'];
 
 const VegBadge = ({ isVeg }) => (
@@ -22,6 +24,17 @@ const MealCard = ({ meal, onAddToCart }) => {
     e.preventDefault();
     onAddToCart(meal);
     setAdded(true);
+    toast.success(`${meal.name} added to cart!`, {
+      style: {
+        borderRadius: '10px',
+        background: '#111827',
+        color: '#fff',
+      },
+      iconTheme: {
+        primary: '#ea580c',
+        secondary: '#fff',
+      },
+    });
     setTimeout(() => setAdded(false), 1500);
   };
 
@@ -77,8 +90,8 @@ const MealCard = ({ meal, onAddToCart }) => {
 
           <div className="mt-auto flex justify-between items-center">
             <div>
-              <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block">Calories</span>
-              <span className="font-bold text-orange-600">{meal.calories} kcal</span>
+              <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block">Price</span>
+              <span className="font-bold text-orange-600 text-lg">₹{meal.price}</span>
             </div>
             <button
               onClick={handleAdd}

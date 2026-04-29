@@ -1,14 +1,22 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginSuccess, logout, updateProfile } from '../features/auth/authSlice';
 
-// Custom hook to access auth state from Redux store
+// Custom hook to access and manage auth state
 const useAuth = () => {
-  const { user, isAuthenticated, isLoading, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { user, isAuthenticated, role } = useSelector((state) => state.auth);
+
+  const handleLogout = () => dispatch(logout());
+  const handleLogin = (userData) => dispatch(loginSuccess(userData));
+  const handleUpdateProfile = (data) => dispatch(updateProfile(data));
 
   return {
     user,
     isAuthenticated,
-    isLoading,
-    error,
+    role,
+    handleLogin,
+    handleLogout,
+    handleUpdateProfile,
   };
 };
 

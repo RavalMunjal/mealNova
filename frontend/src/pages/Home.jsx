@@ -128,7 +128,7 @@ const Home = () => {
                     <h3 className="text-lg font-bold text-gray-900 leading-tight flex-grow pr-2">{meal.name}</h3>
                   </div>
                   <p className="text-gray-500 text-sm mb-3 line-clamp-2">
-                    {meal.cuisine} cuisine • {meal.calories} kcal • {meal.protein}g protein
+                    {meal.cuisine} cuisine • {meal.calories} kcal • ₹{meal.price || Math.round(meal.calories/10)}
                   </p>
                   <div className="flex flex-wrap gap-1 mb-4">
                     {meal.tags.slice(0, 2).map((tag) => (
