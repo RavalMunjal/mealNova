@@ -74,4 +74,4 @@ const MealCard = ({ meal }) => {
   );
 };
 
-export default MealCard;
+export default React.memo(MealCard);

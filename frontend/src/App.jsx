@@ -30,18 +30,30 @@ const ToastNotification = () => {
   );
 };
 
-const ScrollToTop = () => {
+import ReactGA from 'react-ga4';
+
+// Initialize GA with a dummy measurement ID for the project (replace with real one in production)
+const MEASUREMENT_ID = import.meta.env.VITE_GA_ID || "G-XXXXXXXXXX";
+ReactGA.initialize(MEASUREMENT_ID);
+
+const ScrollAndTrack = () => {
   const { pathname } = useLocation();
+  
   useEffect(() => {
+    // Scroll to top on route change
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Track pageview
+    ReactGA.send({ hitType: "pageview", page: pathname, title: document.title });
   }, [pathname]);
+  
   return null;
 };
 
 function App() {
   return (
     <CartProvider>
-      <ScrollToTop />
+      <ScrollAndTrack />
       <Layout>
         <AppRouter />
       </Layout>
