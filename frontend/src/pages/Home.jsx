@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MOCK_MEALS, MOCK_TESTIMONIALS, SUBSCRIPTION_PLANS } from '../services/mockData';
+import SEO from '../components/SEO';
 
 const Home = () => {
   const featuredMeals = MOCK_MEALS.filter((m) => m.rating >= 4.8).slice(0, 3);
 
   return (
     <div className="flex flex-col gap-16 pb-12">
+      <SEO 
+        title="Home" 
+        description="Discover amazing Indian recipes, plan your weekly meals, and get groceries sorted in one place."
+      />
       {/* Hero Section */}
       <section className="relative bg-orange-50 rounded-3xl overflow-hidden shadow-sm mt-6">
         <div className="absolute inset-0 z-0">
