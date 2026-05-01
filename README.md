@@ -80,7 +80,7 @@ Many tiffin service providers struggle with managing daily orders, tracking cust
 
 ---
 
-### 🧑‍🍳 Vendor Features
+### 🧑🍳 Vendor Features
 - Add & Manage Menu  
 - Accept Orders  
 - Track Earnings  

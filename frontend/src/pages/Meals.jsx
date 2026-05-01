@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSessionStorage } from '../hooks/useSessionStorage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilters, searchMeals } from '../features/meals/mealsSlice';
 import { addToCart } from '../features/cart/cartSlice';
@@ -10,8 +11,8 @@ import toast from 'react-hot-toast';
 const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Salad', 'Dessert', 'Extra'];
 
 const VegBadge = ({ isVeg }) => (
-  <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${isVeg ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-    <span className={`w-2 h-2 rounded-full ${isVeg ? 'bg-green-500' : 'bg-red-500'}`}></span>
+  <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${isVeg ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'}`}>
+    <span className={`w-2 h-2 rounded-full ${isVeg ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400'}`}></span>
     {isVeg ? 'Veg' : 'Non-Veg'}
   </span>
 );
@@ -40,12 +41,13 @@ const MealCard = ({ meal, onAddToCart }) => {
 
   return (
     <Link to={`/meals/${meal.id}`} className="block group">
-      <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 overflow-hidden flex flex-col h-full">
         {/* Image */}
         <div className="h-48 relative overflow-hidden flex-shrink-0">
           <img
             src={meal.image}
             alt={meal.name}
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.classList.add('bg-orange-50'); }}
           />
@@ -72,15 +74,15 @@ const MealCard = ({ meal, onAddToCart }) => {
         {/* Content */}
         <div className="p-4 flex flex-col flex-grow">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="font-bold text-gray-900 leading-tight line-clamp-1 flex-grow pr-2">{meal.name}</h3>
-            <div className="flex items-center bg-yellow-50 px-2 py-0.5 rounded text-yellow-700 text-xs font-bold whitespace-nowrap">
+            <h3 className="font-bold text-gray-900 dark:text-slate-100 leading-tight line-clamp-1 flex-grow pr-2">{meal.name}</h3>
+            <div className="flex items-center bg-yellow-50 dark:bg-[#2D1A0E] px-2 py-0.5 rounded text-yellow-700 dark:text-yellow-500 text-xs font-bold whitespace-nowrap">
               ★ {meal.rating}
             </div>
           </div>
 
           <div className="flex flex-wrap gap-1.5 mb-3">
             <VegBadge isVeg={meal.isVeg} />
-            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{meal.cuisine}</span>
+            <span className="text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 px-2 py-0.5 rounded-full">{meal.cuisine}</span>
           </div>
 
           <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
@@ -90,7 +92,7 @@ const MealCard = ({ meal, onAddToCart }) => {
 
           <div className="mt-auto flex justify-between items-center">
             <div>
-              <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block">Price</span>
+              <span className="text-xs text-gray-400 dark:text-slate-500 uppercase tracking-wider font-semibold block">Price</span>
               <span className="font-bold text-orange-600 text-lg">₹{meal.price}</span>
             </div>
             <button
@@ -98,7 +100,7 @@ const MealCard = ({ meal, onAddToCart }) => {
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 shadow-sm ${
                 added
                   ? 'bg-green-500 text-white scale-95'
-                  : 'bg-gray-900 text-white hover:bg-orange-600 hover:scale-105'
+                  : 'bg-gray-900 dark:bg-slate-700 text-white hover:bg-orange-600 dark:hover:bg-orange-600 hover:scale-105'
               }`}
             >
               {added ? '✓ Added' : '+ Add'}
@@ -114,10 +116,10 @@ const ITEMS_PER_PAGE = 12;
 
 const Meals = () => {
   const dispatch = useDispatch();
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('default');
-  const [vegFilter, setVegFilter] = useState('all');
+  const [activeCategory, setActiveCategory] = useSessionStorage('meals_category', 'All');
+  const [searchQuery, setSearchQuery] = useSessionStorage('meals_search', '');
+  const [sortBy, setSortBy] = useSessionStorage('meals_sort', 'default');
+  const [vegFilter, setVegFilter] = useSessionStorage('meals_veg', 'all');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -194,8 +196,8 @@ const Meals = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Explore Meals</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Explore Meals</h1>
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             {filteredMeals.length} dishes found
             {activeCategory !== 'All' && ` in ${activeCategory}`}
           </p>
@@ -209,9 +211,9 @@ const Meals = () => {
               value={searchQuery}
               onChange={handleSearch}
               placeholder="Search meals..."
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-slate-700 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 shadow-sm"
             />
-            <svg className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-400 dark:text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -241,7 +243,7 @@ const Meals = () => {
               className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
                 activeCategory === cat
                   ? 'bg-orange-600 text-white shadow-md scale-105'
-                  : 'bg-white text-gray-600 hover:bg-orange-50 border border-gray-200 hover:border-orange-200'
+                  : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 hover:border-orange-200 dark:hover:border-slate-600'
               }`}
             >
               {cat}
@@ -255,7 +257,7 @@ const Meals = () => {
           <select
             value={vegFilter}
             onChange={(e) => { setVegFilter(e.target.value); setCurrentPage(1); }}
-            className="px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer"
+            className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 text-sm font-medium text-gray-600 dark:text-slate-300 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer"
           >
             <option value="all">All Types</option>
             <option value="veg">🟢 Veg Only</option>
@@ -266,7 +268,7 @@ const Meals = () => {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer"
+            className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 text-sm font-medium text-gray-600 dark:text-slate-300 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer"
           >
             <option value="default">Sort By</option>
             <option value="rating">⭐ Top Rated</option>
@@ -287,8 +289,8 @@ const Meals = () => {
       ) : paginatedMeals.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4">🍽️</div>
-          <h3 className="text-xl font-bold text-gray-700 mb-2">No meals found</h3>
-          <p className="text-gray-500">Try changing your filters or search term.</p>
+          <h3 className="text-xl font-bold text-gray-700 dark:text-slate-200 mb-2">No meals found</h3>
+          <p className="text-gray-500 dark:text-slate-400">Try changing your filters or search term.</p>
           <button
             onClick={() => { setSearchQuery(''); setActiveCategory('All'); setVegFilter('all'); }}
             className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
@@ -311,7 +313,7 @@ const Meals = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="p-2.5 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               ←
             </button>
@@ -322,7 +324,7 @@ const Meals = () => {
                 className={`w-10 h-10 rounded-xl font-bold transition-all ${
                   currentPage === page
                     ? 'bg-orange-600 text-white shadow-md scale-110'
-                    : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                    : 'border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {page}
@@ -331,7 +333,7 @@ const Meals = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="p-2.5 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               →
             </button>

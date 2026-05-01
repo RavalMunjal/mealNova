@@ -45,19 +45,19 @@ const FAQItem = ({ q, a }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border border-gray-100 rounded-2xl overflow-hidden">
+    <div className="border border-gray-100 dark:border-slate-700 rounded-2xl overflow-hidden transition-colors">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center p-5 text-left bg-white hover:bg-gray-50 transition-colors"
+        className="w-full flex justify-between items-center p-5 text-left bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
       >
-        <span className="font-semibold text-gray-900 pr-4">{q}</span>
-        <span className={`flex-shrink-0 w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold transition-transform ${open ? 'rotate-45' : ''}`}>
+        <span className="font-semibold text-gray-900 dark:text-slate-100 pr-4">{q}</span>
+        <span className={`flex-shrink-0 w-8 h-8 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full flex items-center justify-center font-bold transition-transform ${open ? 'rotate-45' : ''}`}>
           +
         </span>
       </button>
       {open && (
-        <div className="px-5 pb-5 bg-gray-50 animate-fade-in">
-          <p className="text-gray-600 text-sm leading-relaxed">{a}</p>
+        <div className="px-5 pb-5 bg-gray-50 dark:bg-slate-800 animate-fade-in transition-colors">
+          <p className="text-gray-600 dark:text-slate-400 text-sm leading-relaxed">{a}</p>
         </div>
       )}
     </div>
@@ -79,22 +79,22 @@ const Pricing = () => {
 
       {/* Header */}
       <div className="text-center mb-14">
-        <span className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-sm font-bold px-4 py-2 rounded-full mb-6">
+        <span className="inline-flex items-center gap-2 bg-orange-100 dark:bg-[#2D1A0E] text-orange-700 dark:text-orange-400 text-sm font-bold px-4 py-2 rounded-full mb-6">
           💎 Subscription Plans
         </span>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight">
           Simple, Transparent Pricing
         </h1>
-        <p className="text-lg text-gray-500 max-w-xl mx-auto mb-8">
+        <p className="text-lg text-gray-500 dark:text-slate-400 max-w-xl mx-auto mb-8">
           Choose a plan that fits your appetite. No hidden fees, cancel anytime.
         </p>
 
         {/* Billing Toggle */}
-        <div className="inline-flex items-center bg-gray-100 rounded-2xl p-1.5">
+        <div className="inline-flex items-center bg-gray-100 dark:bg-slate-800 rounded-2xl p-1.5 transition-colors">
           <button
             onClick={() => setBilling('monthly')}
             className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-              billing === 'monthly' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              billing === 'monthly' ? 'bg-white dark:bg-slate-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300'
             }`}
           >
             Monthly
@@ -102,11 +102,11 @@ const Pricing = () => {
           <button
             onClick={() => setBilling('yearly')}
             className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ${
-              billing === 'yearly' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              billing === 'yearly' ? 'bg-white dark:bg-slate-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300'
             }`}
           >
             Yearly
-            <span className="bg-green-100 text-green-700 text-xs font-extrabold px-2 py-0.5 rounded-full">
+            <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-extrabold px-2 py-0.5 rounded-full">
               Save 20%
             </span>
           </button>
@@ -130,17 +130,17 @@ const Pricing = () => {
               </div>
             )}
 
-            <div className={`p-8 ${plan.popular ? 'bg-gradient-to-b from-orange-50 to-white' : 'bg-white'}`}>
+            <div className={`p-8 ${plan.popular ? 'bg-gradient-to-b from-orange-50 to-white dark:from-[#2D1A0E] dark:to-slate-800' : 'bg-white dark:bg-slate-800'}`}>
               {/* Plan header */}
               <div className="mb-6">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 ${
-                  plan.name === 'Basic' ? 'bg-gray-100' :
-                  plan.name === 'Pro' ? 'bg-orange-100' : 'bg-purple-100'
+                  plan.name === 'Basic' ? 'bg-gray-100 dark:bg-slate-700' :
+                  plan.name === 'Pro' ? 'bg-orange-100 dark:bg-orange-900/30' : 'bg-purple-100 dark:bg-purple-900/30'
                 }`}>
                   {plan.name === 'Basic' ? '🥗' : plan.name === 'Pro' ? '🍱' : '👑'}
                 </div>
-                <h3 className="text-2xl font-extrabold text-gray-900">{plan.name}</h3>
-                <p className="text-gray-500 text-sm mt-1">
+                <h3 className="text-2xl font-extrabold text-gray-900 dark:text-slate-100">{plan.name}</h3>
+                <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
                   {plan.mealsPerDay} meal{plan.mealsPerDay > 1 ? 's' : ''}/day • {plan.deliveryDays} days/week
                 </p>
               </div>
@@ -148,15 +148,15 @@ const Pricing = () => {
               {/* Price */}
               <div className="mb-8">
                 <div className="flex items-end gap-1">
-                  <span className="text-5xl font-extrabold text-gray-900">₹{getPrice(plan).toLocaleString()}</span>
-                  <span className="text-gray-400 mb-2">/mo</span>
+                  <span className="text-5xl font-extrabold text-gray-900 dark:text-white">₹{getPrice(plan).toLocaleString()}</span>
+                  <span className="text-gray-400 dark:text-slate-500 mb-2">/mo</span>
                 </div>
                 {billing === 'yearly' && (
-                  <p className="text-green-600 text-sm font-bold mt-1">
+                  <p className="text-green-600 dark:text-green-500 text-sm font-bold mt-1">
                     ✅ Save ₹{((plan.price - getPrice(plan)) * 12).toLocaleString()}/year
                   </p>
                 )}
-                <p className="text-gray-400 text-xs mt-1">
+                <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">
                   ≈ ₹{Math.round(getPrice(plan) / 30)}/day
                 </p>
               </div>
@@ -166,13 +166,13 @@ const Pricing = () => {
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      plan.popular ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'
+                      plan.popular ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400' : 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
                     }`}>
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-700">{feature}</span>
+                    <span className="text-gray-700 dark:text-slate-300">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -182,13 +182,13 @@ const Pricing = () => {
                 className={`block w-full py-3.5 text-center font-extrabold rounded-2xl transition-all hover:scale-[1.02] ${
                   plan.popular
                     ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-xl'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
+                    : 'bg-gray-900 dark:bg-slate-700 text-white hover:bg-gray-800 dark:hover:bg-slate-600'
                 }`}
               >
                 Get Started {billing === 'yearly' ? 'Yearly' : 'Monthly'}
               </Link>
 
-              <p className="text-center text-xs text-gray-400 mt-3">No setup fee • Cancel anytime</p>
+              <p className="text-center text-xs text-gray-400 dark:text-slate-500 mt-3">No setup fee • Cancel anytime</p>
             </div>
           </div>
         ))}
@@ -196,15 +196,15 @@ const Pricing = () => {
 
       {/* Feature Comparison Table */}
       <section className="mb-20">
-        <h2 className="text-2xl font-extrabold text-gray-900 text-center mb-8">Compare Plans</h2>
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white text-center mb-8">Compare Plans</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden transition-colors">
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="text-left px-6 py-4 text-gray-600 font-semibold text-sm">Feature</th>
+              <tr className="bg-gray-50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700">
+                <th className="text-left px-6 py-4 text-gray-600 dark:text-slate-300 font-semibold text-sm">Feature</th>
                 {SUBSCRIPTION_PLANS.map((plan) => (
-                  <th key={plan.id} className={`px-6 py-4 text-center text-sm font-extrabold ${plan.popular ? 'text-orange-600' : 'text-gray-900'}`}>
-                    {plan.popular && <span className="block text-xs text-orange-400 font-bold">Popular</span>}
+                  <th key={plan.id} className={`px-6 py-4 text-center text-sm font-extrabold ${plan.popular ? 'text-orange-600 dark:text-orange-400' : 'text-gray-900 dark:text-slate-100'}`}>
+                    {plan.popular && <span className="block text-xs text-orange-400 dark:text-orange-500 font-bold">Popular</span>}
                     {plan.name}
                   </th>
                 ))}
@@ -212,13 +212,13 @@ const Pricing = () => {
             </thead>
             <tbody>
               {FEATURE_COMPARISON.map((row, idx) => (
-                <tr key={row.feature} className={`border-b border-gray-50 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
-                  <td className="px-6 py-4 text-sm text-gray-700 font-medium">{row.feature}</td>
+                <tr key={row.feature} className={`border-b border-gray-50 dark:border-slate-700/50 ${idx % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-gray-50/50 dark:bg-slate-800'}`}>
+                  <td className="px-6 py-4 text-sm text-gray-700 dark:text-slate-300 font-medium">{row.feature}</td>
                   {[row.basic, row.pro, row.premium].map((val, i) => (
                     <td key={i} className={`px-6 py-4 text-center text-sm ${
-                      val === '–' ? 'text-gray-300' :
-                      val === '✓' ? 'text-green-600 font-bold text-base' :
-                      i === 1 ? 'text-orange-600 font-semibold' : 'text-gray-700 font-medium'
+                      val === '–' ? 'text-gray-300 dark:text-slate-600' :
+                      val === '✓' ? 'text-green-600 dark:text-green-500 font-bold text-base' :
+                      i === 1 ? 'text-orange-600 dark:text-orange-400 font-semibold' : 'text-gray-700 dark:text-slate-300 font-medium'
                     }`}>
                       {val}
                     </td>
@@ -233,8 +233,8 @@ const Pricing = () => {
       {/* FAQ */}
       <section className="mb-20">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-3">Frequently Asked Questions</h2>
-          <p className="text-gray-500">Everything you need to know about MealNova plans.</p>
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">Frequently Asked Questions</h2>
+          <p className="text-gray-500 dark:text-slate-400">Everything you need to know about MealNova plans.</p>
         </div>
         <div className="max-w-3xl mx-auto space-y-3">
           {FAQ_ITEMS.map((item) => (

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../features/cart/cartSlice';
 import { MOCK_MEALS } from '../services/mockData';
+import SEO from '../components/SEO';
 
 import toast from 'react-hot-toast';
 
@@ -56,6 +57,33 @@ const MealDetail = () => {
     `Garnish with fresh coriander and serve hot. ${meal.name} is ready!`,
   ];
 
+  const schemaData = {
+    "@context": "https://schema.org/",
+    "@type": "Recipe",
+    "name": meal.name,
+    "image": [meal.image],
+    "author": {
+      "@type": "Organization",
+      "name": "MealNova"
+    },
+    "prepTime": `PT${meal.prepTime}M`,
+    "recipeYield": "1 serving",
+    "recipeCategory": meal.category,
+    "recipeCuisine": meal.cuisine,
+    "nutrition": {
+      "@type": "NutritionInformation",
+      "calories": `${meal.calories} calories`,
+      "proteinContent": `${meal.protein}g`,
+      "fatContent": `${meal.fat}g`,
+      "carbohydrateContent": `${meal.carbs}g`
+    },
+    "recipeIngredient": ingredients,
+    "recipeInstructions": steps.map((step) => ({
+      "@type": "HowToStep",
+      "text": step
+    }))
+  };
+
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
       dispatch(addToCart({ ...meal, price: mealPrice }));
@@ -74,6 +102,11 @@ const MealDetail = () => {
 
   return (
     <div className="py-8 max-w-6xl mx-auto">
+      <SEO 
+        title={meal.name} 
+        description={`Delicious ${meal.cuisine} ${meal.category} meal. ${meal.calories} calories. Order now on MealNova.`}
+        schemaData={schemaData}
+      />
       {/* Back link */}
       <Link
         to="/meals"
@@ -91,6 +124,7 @@ const MealDetail = () => {
           <img
             src={meal.image}
             alt={meal.name}
+            loading="lazy"
             className="w-full h-full object-cover"
             onError={(e) => {
               e.target.style.display = 'none';
@@ -269,6 +303,7 @@ const MealDetail = () => {
                     <img
                       src={m.image}
                       alt={m.name}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => { e.target.style.background = '#fed7aa'; e.target.style.display = 'none'; }}
                     />
