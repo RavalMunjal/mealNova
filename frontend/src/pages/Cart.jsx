@@ -1,11 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart, clearCart } from '../features/cart/cartSlice';
+import { useCartStore } from '../store/cartStore';
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { items, total } = useSelector((state) => state.cart);
+  const { setCartItems } = useCartStore();
+
+  const handleCheckout = () => {
+    const syncedCart = {};
+    items.forEach(item => {
+      syncedCart[item.id] = {
+        meal: { ...item, cal: item.calories || 0 },
+        quantity: item.quantity
+      };
+    });
+    setCartItems(syncedCart);
+    navigate('/checkout');
+  };
 
   const handleIncrease = (item) => {
     dispatch(addToCart(item));
@@ -157,7 +172,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <button className="w-full py-3.5 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 transition-colors shadow-md hover:scale-[1.02] transform">
+            <button onClick={handleCheckout} className="w-full py-3.5 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 transition-colors shadow-md hover:scale-[1.02] transform">
               Proceed to Checkout
             </button>
 

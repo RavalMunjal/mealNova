@@ -46,7 +46,7 @@ const Login = () => {
           role: 'user',
         };
         dispatch(loginSuccess(newUser));
-        navigate('/dashboard');
+        navigate('/');
       } else {
         // Login: find user in mock data
         const found = MOCK_USERS.find(
@@ -54,7 +54,7 @@ const Login = () => {
         );
         if (found) {
           dispatch(loginSuccess(found));
-          navigate('/dashboard');
+          navigate('/');
         } else {
           // Accept any credentials for demo
           const demoUser = {
@@ -65,7 +65,7 @@ const Login = () => {
             role: 'user',
           };
           dispatch(loginSuccess(demoUser));
-          navigate('/dashboard');
+          navigate('/');
         }
       }
       setLoading(false);
