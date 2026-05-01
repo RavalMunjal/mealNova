@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilters, searchMeals } from '../features/meals/mealsSlice';
 import { addToCart } from '../features/cart/cartSlice';
 import { MOCK_MEALS } from '../services/mockData';
-
+import Skeleton from '../components/Skeleton';
 import toast from 'react-hot-toast';
 
 const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Salad', 'Dessert', 'Extra'];
@@ -119,6 +119,16 @@ const Meals = () => {
   const [sortBy, setSortBy] = useState('default');
   const [vegFilter, setVegFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API fetch delay
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [activeCategory, searchQuery, vegFilter, sortBy]);
 
   const { cartItems } = useSelector((state) => ({
     cartItems: state.cart.items,
@@ -268,7 +278,13 @@ const Meals = () => {
       </div>
 
       {/* Grid */}
-      {paginatedMeals.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: ITEMS_PER_PAGE }).map((_, idx) => (
+            <Skeleton key={idx} type="card" />
+          ))}
+        </div>
+      ) : paginatedMeals.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4">🍽️</div>
           <h3 className="text-xl font-bold text-gray-700 mb-2">No meals found</h3>

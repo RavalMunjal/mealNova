@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
+import { toggleTheme } from '../features/ui/uiSlice';
 import { getInitials } from '../utils/helpers';
 import Logo from './Logo';
-import { LayoutDashboard, User, Calendar, LogOut, Home, Utensils, Info, Gem } from 'lucide-react';
+import { LayoutDashboard, User, Calendar, LogOut, Home, Utensils, Info, Gem, Moon, Sun } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.ui);
   const cartCount = useSelector((state) =>
     state.cart.items.reduce((sum, i) => sum + i.quantity, 0)
   );
@@ -67,6 +69,15 @@ const Navbar = () => {
 
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-3 ml-4">
+            {/* Theme Toggle */}
+            <button
+              onClick={() => dispatch(toggleTheme())}
+              className="p-2 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+              title="Toggle Dark Mode"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {/* Cart */}
             <Link
               to="/cart"

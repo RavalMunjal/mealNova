@@ -50,7 +50,33 @@ const ScrollAndTrack = () => {
   return null;
 };
 
+import { useSelector } from 'react-redux';
+import socketService from './services/socketService';
+
 function App() {
+  const { theme } = useSelector((state) => state.ui);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (isAuthenticated && user?.token) {
+      socketService.connect(user.token);
+    } else {
+      socketService.disconnect();
+    }
+    
+    return () => {
+      socketService.disconnect();
+    };
+  }, [isAuthenticated, user]);
+
   return (
     <CartProvider>
       <ScrollAndTrack />
