@@ -1,66 +1,48 @@
-// apiService.js - Handles all API calls with axios
-// When backend is ready, replace BASE_URL with actual backend URL
+import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Create an Axios instance
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request Interceptor: Attach Token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response Interceptor: Global Error Handling
+axiosInstance.interceptors.response.use(
+  (response) => response.data, // Simplify response data extraction
+  (error) => {
+    // Check if it's an unauthorized error
+    if (error.response && error.response.status === 401) {
+      // Handle logout or token refresh here
+      localStorage.removeItem('token');
+      // window.location.href = '/login'; // Optional redirection
+    }
+    return Promise.reject(error.response ? error.response.data : error);
+  }
+);
+
 const apiService = {
-  // Generic GET request
-  get: async (endpoint) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-    });
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-  },
-
-  // Generic POST request
-  post: async (endpoint, data) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-  },
-
-  // Generic PUT request
-  put: async (endpoint, data) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-  },
-
-  // Generic DELETE request
-  delete: async (endpoint) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-    });
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-  },
+  get: (endpoint) => axiosInstance.get(endpoint),
+  post: (endpoint, data) => axiosInstance.post(endpoint, data),
+  put: (endpoint, data) => axiosInstance.put(endpoint, data),
+  delete: (endpoint) => axiosInstance.delete(endpoint),
 };
 
 export default apiService;

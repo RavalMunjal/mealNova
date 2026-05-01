@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../features/auth/authSlice';
 import { getInitials } from '../utils/helpers';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { SUBSCRIPTION_PLANS } from '../services/mockData';
+import { toast } from 'react-hot-toast';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,12 @@ const Profile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [saved, setSaved] = useState(false);
+  
+  // Avatar Upload State
+  const fileInputRef = useRef(null);
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null);
+  const [avatarFile, setAvatarFile] = useState(null);
+
   const [form, setForm] = useState({
     name: user?.name || 'MealNova User',
     email: user?.email || 'user@example.com',
@@ -26,10 +33,47 @@ const Profile = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file (JPEG, PNG, etc).');
+      return;
+    }
+
+    // Validate size (Max 2MB)
+    const MAX_SIZE = 2 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      toast.error('Image is too large. Maximum size is 2MB.');
+      return;
+    }
+
+    setAvatarFile(file);
+
+    // Read and preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const triggerFileInput = () => {
+    if (isEditing && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleSave = () => {
-    dispatch(updateProfile({ name: form.name, email: form.email }));
+    // In a real app, you would upload the avatarFile to a cloud storage here
+    // e.g. await uploadAvatar(avatarFile)
+    
+    dispatch(updateProfile({ name: form.name, email: form.email, avatar: avatarPreview }));
     setIsEditing(false);
     setSaved(true);
+    toast.success('Profile updated successfully!');
     setTimeout(() => setSaved(false), 2000);
   };
 
@@ -55,17 +99,38 @@ const Profile = () => {
         <div className="space-y-5">
           {/* Avatar */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col items-center text-center">
-            <div className="relative mb-4">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg shadow-orange-200">
-                {getInitials(form.name)}
-              </div>
+            <div 
+              className={`relative mb-4 ${isEditing ? 'cursor-pointer hover:opacity-90' : ''}`}
+              onClick={triggerFileInput}
+              title={isEditing ? 'Click to change avatar' : ''}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              
+              {avatarPreview ? (
+                <img 
+                  src={avatarPreview} 
+                  alt={form.name} 
+                  className="w-24 h-24 rounded-full object-cover shadow-lg shadow-orange-200 border-2 border-orange-500" 
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg shadow-orange-200">
+                  {getInitials(form.name)}
+                </div>
+              )}
+
               {isEditing && (
-                <button className="absolute bottom-0 right-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-md">
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-md z-10">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                </button>
+                </div>
               )}
             </div>
 

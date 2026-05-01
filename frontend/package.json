@@ -22,6 +22,7 @@
     "@nivo/line": "^0.99.0",
     "@reduxjs/toolkit": "^2.11.2",
     "autoprefixer": "^10.5.0",
+    "axios": "^1.15.2",
     "clsx": "^2.1.1",
     "formik": "^2.4.9",
     "framer-motion": "^12.38.0",

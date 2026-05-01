@@ -1,75 +1,81 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { loginSuccess } from '../features/auth/authSlice';
 import { MOCK_USERS } from '../services/mockData';
-import { validateLoginForm, validateRegisterForm } from '../utils/validators';
 import Logo from '../components/Logo';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' });
-    }
-  };
+  const loginSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = isSignUp
-      ? validateRegisterForm(form)
-      : validateLoginForm(form);
+  const registerSchema = Yup.object().shape({
+    name: Yup.string().min(2, 'Name is too short').required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  });
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+    validationSchema: isSignUp ? registerSchema : loginSchema,
+    onSubmit: (values) => {
+      setLoading(true);
 
-    setLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      if (isSignUp) {
-        // Register: create new mock user
-        const newUser = {
-          id: `u${Date.now()}`,
-          name: form.name,
-          email: form.email,
-          plan: 'Basic',
-          role: 'user',
-        };
-        dispatch(loginSuccess(newUser));
-        navigate('/');
-      } else {
-        // Login: find user in mock data
-        const found = MOCK_USERS.find(
-          (u) => u.email === form.email
-        );
-        if (found) {
-          dispatch(loginSuccess(found));
-          navigate('/');
-        } else {
-          // Accept any credentials for demo
-          const demoUser = {
-            id: 'u_demo',
-            name: form.email.split('@')[0],
-            email: form.email,
-            plan: 'Pro',
+      // Simulate API call
+      setTimeout(() => {
+        if (isSignUp) {
+          // Register: create new mock user
+          const newUser = {
+            id: `u${Date.now()}`,
+            name: values.name,
+            email: values.email,
+            plan: 'Basic',
             role: 'user',
           };
-          dispatch(loginSuccess(demoUser));
+          dispatch(loginSuccess(newUser));
           navigate('/');
+        } else {
+          // Login: find user in mock data
+          const found = MOCK_USERS.find(
+            (u) => u.email === values.email
+          );
+          if (found) {
+            dispatch(loginSuccess(found));
+            navigate('/');
+          } else {
+            // Accept any credentials for demo
+            const demoUser = {
+              id: 'u_demo',
+              name: values.email.split('@')[0],
+              email: values.email,
+              plan: 'Pro',
+              role: 'user',
+            };
+            dispatch(loginSuccess(demoUser));
+            navigate('/');
+          }
         }
-      }
-      setLoading(false);
-    }, 800);
+        setLoading(false);
+      }, 800);
+    },
+  });
+
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    formik.resetForm();
   };
 
   return (
@@ -85,20 +91,21 @@ const Login = () => {
         </div>
 
         <div className="p-8">
-          <form className="space-y-5" onSubmit={handleSubmit} autoComplete="off">
+          <form className="space-y-5" onSubmit={formik.handleSubmit} autoComplete="off">
             {isSignUp && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input
                   type="text"
                   name="name"
-                  value={form.name}
-                  onChange={handleChange}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   autoComplete="name"
-                  className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
+                  className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${formik.touched.name && formik.errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
                   placeholder="Rahul Sharma"
                 />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                {formik.touched.name && formik.errors.name && <p className="text-red-500 text-xs mt-1">{formik.errors.name}</p>}
               </div>
             )}
 
@@ -107,13 +114,14 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
-                value={form.email}
-                onChange={handleChange}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 autoComplete="email"
-                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${errors.email ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
+                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${formik.touched.email && formik.errors.email ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
                 placeholder="you@example.com"
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+              {formik.touched.email && formik.errors.email && <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>}
             </div>
 
             <div>
@@ -126,13 +134,14 @@ const Login = () => {
               <input
                 type="password"
                 name="password"
-                value={form.password}
-                onChange={handleChange}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 autoComplete="current-password"
-                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${errors.password ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
+                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none ${formik.touched.password && formik.errors.password ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
                 placeholder="••••••••"
               />
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              {formik.touched.password && formik.errors.password && <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>}
             </div>
 
             <button
@@ -166,7 +175,6 @@ const Login = () => {
           <div className="mt-6 grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={handleSubmit}
               className="w-full inline-flex justify-center items-center gap-2 py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -192,7 +200,7 @@ const Login = () => {
             {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
             <button
               type="button"
-              onClick={() => { setIsSignUp(!isSignUp); setErrors({}); setForm({ name: '', email: '', password: '' }); }}
+              onClick={toggleMode}
               className="font-bold text-orange-600 hover:text-orange-500 focus:outline-none"
             >
               {isSignUp ? 'Sign in' : 'Sign up'}
