@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { swapMeal, savePlan, resetPlan } from '../features/planner/plannerSlice';
 import { MOCK_MEALS } from '../services/mockData';
+import { Sunrise, Sun, Moon, Flame, Dumbbell } from 'lucide-react';
 
 const DAYS = [
   { key: 'mon', label: 'Monday' },
@@ -15,9 +16,9 @@ const DAYS = [
 ];
 
 const MEAL_TIMES = [
-  { key: 'breakfast', label: 'Breakfast', icon: '🌅', time: '8:00 AM', color: 'bg-yellow-100 text-yellow-700' },
-  { key: 'lunch', label: 'Lunch', icon: '☀️', time: '1:00 PM', color: 'bg-blue-100 text-blue-700' },
-  { key: 'dinner', label: 'Dinner', icon: '🌙', time: '7:30 PM', color: 'bg-purple-100 text-purple-700' },
+  { key: 'breakfast', label: 'Breakfast', icon: <Sunrise className="w-3.5 h-3.5 inline-block -mt-0.5" />, time: '8:00 AM', color: 'bg-yellow-100 text-yellow-700' },
+  { key: 'lunch', label: 'Lunch', icon: <Sun className="w-3.5 h-3.5 inline-block -mt-0.5" />, time: '1:00 PM', color: 'bg-blue-100 text-blue-700' },
+  { key: 'dinner', label: 'Dinner', icon: <Moon className="w-3.5 h-3.5 inline-block -mt-0.5" />, time: '7:30 PM', color: 'bg-purple-100 text-purple-700' },
 ];
 
 const getMealById = (id) => MOCK_MEALS.find((m) => m.id === id);
@@ -283,11 +284,11 @@ const Planner = () => {
               {DAYS.find((d) => d.key === activeDay)?.label}
             </h2>
             <div className="flex gap-3 text-sm">
-              <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full font-bold">
-                🔥 {totalCals} kcal
+              <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">
+                <Flame className="w-4 h-4" /> {totalCals} kcal
               </span>
-              <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full font-bold">
-                💪 {totalProtein}g protein
+              <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">
+                <Dumbbell className="w-4 h-4" /> {totalProtein}g protein
               </span>
             </div>
           </div>

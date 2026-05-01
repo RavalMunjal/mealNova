@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { MOCK_DELIVERIES, MOCK_NOTIFICATIONS, MOCK_MEALS } from '../services/mockData';
+import { Utensils, Flame, ShoppingCart, Star, Package, Bell, Coffee, UtensilsCrossed, Soup, TrendingUp } from 'lucide-react';
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -52,10 +53,10 @@ const Dashboard = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         {[
-          { label: 'Meals Planned', value: plannedMealsCount, icon: '🍽️', color: 'bg-orange-50 text-orange-600', sub: 'this week' },
-          { label: 'Cart Calories', value: cartCalories > 0 ? cartCalories : '–', icon: '🔥', color: 'bg-blue-50 text-blue-600', sub: 'from cart items' },
-          { label: 'Cart Items', value: cartItems.length, icon: '🛒', color: 'bg-purple-50 text-purple-600', sub: 'selected meals' },
-          { label: 'Active Plan', value: user?.plan || 'Basic', icon: '⭐', color: 'bg-green-50 text-green-600', sub: 'subscription' },
+          { label: 'Meals Planned', value: plannedMealsCount, icon: <Utensils className="w-6 h-6" />, color: 'bg-orange-50 text-orange-600', sub: 'this week' },
+          { label: 'Cart Calories', value: cartCalories > 0 ? cartCalories : '–', icon: <Flame className="w-6 h-6" />, color: 'bg-blue-50 text-blue-600', sub: 'from cart items' },
+          { label: 'Cart Items', value: cartItems.length, icon: <ShoppingCart className="w-6 h-6" />, color: 'bg-purple-50 text-purple-600', sub: 'selected meals' },
+          { label: 'Active Plan', value: user?.plan || 'Basic', icon: <Star className="w-6 h-6 fill-current" />, color: 'bg-green-50 text-green-600', sub: 'subscription' },
         ].map((stat) => (
           <div key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
             <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center text-2xl mb-3`}>
@@ -72,7 +73,9 @@ const Dashboard = () => {
         {/* Today's Deliveries */}
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">📦 Today's Deliveries</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Package className="w-6 h-6 text-orange-600" /> Today's Deliveries
+            </h2>
             <span className="text-xs font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
               {MOCK_DELIVERIES.filter((d) => d.date === 'Today').length} deliveries
             </span>
@@ -80,8 +83,8 @@ const Dashboard = () => {
           <div className="space-y-3">
             {MOCK_DELIVERIES.map((delivery) => (
               <div key={delivery.id} className={`flex items-center gap-4 p-4 rounded-xl border transition-all hover:shadow-sm ${delivery.date === 'Today' ? 'bg-gray-50 border-gray-100' : 'bg-blue-50/30 border-blue-100'}`}>
-                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                  {delivery.type === 'Lunch' ? '🍱' : delivery.type === 'Breakfast' ? '🥞' : '🍲'}
+                <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  {delivery.type === 'Lunch' ? <UtensilsCrossed className="w-6 h-6" /> : delivery.type === 'Breakfast' ? <Coffee className="w-6 h-6" /> : <Soup className="w-6 h-6" />}
                 </div>
                 <div className="flex-grow min-w-0">
                   <p className="font-semibold text-gray-900 text-sm line-clamp-1">{delivery.meal}</p>
@@ -104,7 +107,9 @@ const Dashboard = () => {
         {/* Notifications */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">🔔 Notifications</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Bell className="w-6 h-6 text-orange-600" /> Notifications
+            </h2>
             <span className="text-xs font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
               {MOCK_NOTIFICATIONS.filter((n) => !n.read).length} new
             </span>
@@ -132,7 +137,9 @@ const Dashboard = () => {
       {/* Recommended Meals */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold text-gray-900">⭐ Recommended For You</h2>
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-orange-600" /> Recommended For You
+          </h2>
           <Link to="/meals" className="text-orange-600 text-sm font-bold hover:underline">
             View All →
           </Link>

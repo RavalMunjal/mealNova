@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import { getInitials } from '../utils/helpers';
 import Logo from './Logo';
+import { LayoutDashboard, User, Calendar, LogOut, Home, Utensils, Info, Gem } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,20 +109,20 @@ const Navbar = () => {
                       </span>
                     </div>
                     <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                      <span>📊</span> Dashboard
+                      <LayoutDashboard className="w-4 h-4" /> Dashboard
                     </Link>
                     <Link to="/profile" className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                      <span>👤</span> My Profile
+                      <User className="w-4 h-4" /> My Profile
                     </Link>
                     <Link to="/planner" className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                      <span>📅</span> Meal Planner
+                      <Calendar className="w-4 h-4" /> Meal Planner
                     </Link>
                     <hr className="my-1 border-gray-100" />
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
-                      <span>🚪</span> Sign Out
+                      <LogOut className="w-4 h-4" /> Sign Out
                     </button>
                   </div>
                 )}
@@ -182,22 +183,22 @@ const Navbar = () => {
         <div className="md:hidden border-t border-gray-100 bg-white shadow-lg animate-fade-in">
           <div className="px-4 py-3 space-y-1">
             {[
-              { to: '/', label: '🏠 Home' },
-              { to: '/meals', label: '🍽️ Meals' },
-              { to: '/planner', label: '📅 Planner' },
-              { to: '/about', label: 'ℹ️ About' },
-              { to: '/pricing', label: '💎 Pricing' },
-            ].map(({ to, label }) => (
+              { to: '/', label: 'Home', icon: Home },
+              { to: '/meals', label: 'Meals', icon: Utensils },
+              { to: '/planner', label: 'Planner', icon: Calendar },
+              { to: '/about', label: 'About', icon: Info },
+              { to: '/pricing', label: 'Pricing', icon: Gem },
+            ].map(({ to, label, icon: Icon }) => (
               <Link
                 key={to}
                 to={to}
-                className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
                   isActive(to)
                     ? 'bg-orange-50 text-orange-600'
                     : 'text-gray-700 hover:text-orange-600 hover:bg-orange-50'
                 }`}
               >
-                {label}
+                <Icon className="w-5 h-5" /> {label}
               </Link>
             ))}
           </div>
@@ -214,17 +215,17 @@ const Navbar = () => {
                     <p className="text-xs text-orange-600 font-semibold">{user?.plan} Plan</p>
                   </div>
                 </div>
-                <Link to="/dashboard" className="block px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-colors font-medium">
-                  📊 Dashboard
+                <Link to="/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-colors font-medium">
+                  <LayoutDashboard className="w-5 h-5" /> Dashboard
                 </Link>
-                <Link to="/profile" className="block px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-colors font-medium">
-                  👤 Profile
+                <Link to="/profile" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-colors font-medium">
+                  <User className="w-5 h-5" /> Profile
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium mt-1"
+                  className="flex items-center gap-3 w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium mt-1"
                 >
-                  🚪 Sign Out
+                  <LogOut className="w-5 h-5" /> Sign Out
                 </button>
               </>
             ) : (
