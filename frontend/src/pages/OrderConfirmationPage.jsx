@@ -45,30 +45,30 @@ const OrderConfirmationPage = () => {
         </svg>
       </div>
 
-      <h1 className="text-4xl font-bold font-playfair mb-2 text-center text-gray-800">Order Placed Successfully!</h1>
-      <p className="text-lg text-gray-600 mb-8 text-center">Your tiffin is being prepared with love 🍱</p>
+      <h1 className="text-4xl font-bold font-playfair mb-2 text-center text-gray-800 dark:text-white">Order Placed Successfully!</h1>
+      <p className="text-lg text-gray-600 dark:text-slate-300 mb-8 text-center">Your tiffin is being prepared with love 🍱</p>
 
       {/* Order Details Card */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 w-full max-w-md mb-8">
-        <div className="flex justify-between items-center border-b pb-4 mb-4">
-          <span className="text-gray-500">Order ID</span>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 w-full max-w-md mb-8 transition-colors">
+        <div className="flex justify-between items-center border-b dark:border-slate-700 pb-4 mb-4">
+          <span className="text-gray-500 dark:text-slate-400">Order ID</span>
           <span className="font-mono font-bold text-[#E8521A]">{orderId || 'MN-123456'}</span>
         </div>
         
         <div className="space-y-3 mb-4">
           <div className="flex justify-between">
-            <span className="text-gray-500">Delivery Slot</span>
-            <span className="font-medium text-right">{deliverySlot || 'Morning 8–10 AM'}</span>
+            <span className="text-gray-500 dark:text-slate-400">Delivery Slot</span>
+            <span className="font-medium text-right dark:text-slate-100">{deliverySlot || 'Morning 8–10 AM'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Plan</span>
-            <span className="font-medium">{selectedPlan?.label || 'One-time Order'}</span>
+            <span className="text-gray-500 dark:text-slate-400">Plan</span>
+            <span className="font-medium dark:text-slate-100">{selectedPlan?.label || 'One-time Order'}</span>
           </div>
         </div>
 
-        <div className="border-t pt-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Items:</h3>
-          <ul className="text-sm text-gray-600 space-y-1">
+        <div className="border-t dark:border-slate-700 pt-4">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Items:</h3>
+          <ul className="text-sm text-gray-600 dark:text-slate-300 space-y-1">
             {cartList.map(item => (
               <li key={item.meal.id} className="flex justify-between">
                 <span>{item.quantity}x {item.meal.name}</span>
@@ -90,7 +90,7 @@ const OrderConfirmationPage = () => {
         </button>
         <button
           onClick={handleContinueShopping}
-          className="flex-1 py-3 px-6 bg-white text-[#E8521A] border border-[#E8521A] rounded-lg font-semibold hover:bg-[#E8521A]/5 transition-colors text-center"
+          className="flex-1 py-3 px-6 bg-white dark:bg-slate-800 text-[#E8521A] border border-[#E8521A] rounded-lg font-semibold hover:bg-[#E8521A]/5 dark:hover:bg-[#E8521A]/10 transition-colors text-center"
         >
           Continue Shopping
         </button>

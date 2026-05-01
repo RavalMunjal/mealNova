@@ -4,6 +4,7 @@ import { updateProfile } from '../features/auth/authSlice';
 import { getInitials } from '../utils/helpers';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import FileUpload from '../components/FileUpload';
 import { SUBSCRIPTION_PLANS } from '../services/mockData';
 import { toast } from 'react-hot-toast';
 
@@ -33,37 +34,13 @@ const Profile = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file (JPEG, PNG, etc).');
-      return;
-    }
-
-    // Validate size (Max 2MB)
-    const MAX_SIZE = 2 * 1024 * 1024;
-    if (file.size > MAX_SIZE) {
-      toast.error('Image is too large. Maximum size is 2MB.');
-      return;
-    }
-
+  const handleFileChange = (file) => {
     setAvatarFile(file);
-
-    // Read and preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setAvatarPreview(reader.result);
     };
     reader.readAsDataURL(file);
-  };
-
-  const triggerFileInput = () => {
-    if (isEditing && fileInputRef.current) {
-      fileInputRef.current.click();
-    }
   };
 
   const handleSave = () => {
@@ -86,7 +63,7 @@ const Profile = () => {
   return (
     <div className="py-8 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h1>
         {saved && (
           <span className="bg-green-100 text-green-700 font-bold text-sm px-4 py-2 rounded-full animate-fade-in">
             ✓ Profile saved!
@@ -98,58 +75,63 @@ const Profile = () => {
         {/* Left - Avatar Card */}
         <div className="space-y-5">
           {/* Avatar */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col items-center text-center">
-            <div 
-              className={`relative mb-4 ${isEditing ? 'cursor-pointer hover:opacity-90' : ''}`}
-              onClick={triggerFileInput}
-              title={isEditing ? 'Click to change avatar' : ''}
-            >
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-              />
-              
-              {avatarPreview ? (
-                <img 
-                  src={avatarPreview} 
-                  alt={form.name} 
-                  className="w-24 h-24 rounded-full object-cover shadow-lg shadow-orange-200 border-2 border-orange-500" 
-                />
-              ) : (
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg shadow-orange-200">
-                  {getInitials(form.name)}
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-8 flex flex-col items-center text-center transition-colors">
+            {isEditing ? (
+              <FileUpload onFileSelect={handleFileChange} accept="image/*" maxSizeMB={2}>
+                <div className="relative mb-4 cursor-pointer hover:opacity-90" title="Click or drag to change avatar">
+                  {avatarPreview ? (
+                    <img 
+                      src={avatarPreview} 
+                      alt={form.name} 
+                      className="w-24 h-24 rounded-full object-cover shadow-lg shadow-orange-200 border-2 border-orange-500" 
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg shadow-orange-200">
+                      {getInitials(form.name)}
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-md z-10">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
                 </div>
-              )}
+              </FileUpload>
+            ) : (
+              <div className="relative mb-4">
+                {avatarPreview ? (
+                  <img 
+                    src={avatarPreview} 
+                    alt={form.name} 
+                    className="w-24 h-24 rounded-full object-cover shadow-lg shadow-orange-200 border-2 border-orange-500" 
+                  />
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg shadow-orange-200">
+                    {getInitials(form.name)}
+                  </div>
+                )}
+              </div>
+            )}
 
-              {isEditing && (
-                <div className="absolute bottom-0 right-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-md z-10">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-              )}
-            </div>
 
-            <h2 className="text-xl font-bold text-gray-900">{form.name}</h2>
-            <p className="text-gray-500 text-sm mt-1">{form.email}</p>
-            <span className="mt-2 bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full">
+
+            <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">{form.name}</h2>
+            <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">{form.email}</p>
+            <span className="mt-2 bg-orange-100 dark:bg-[#2D1A0E] text-orange-700 dark:text-orange-400 text-xs font-bold px-3 py-1 rounded-full">
               {user?.plan || 'Basic'} Plan
             </span>
 
             {/* Quick Stats */}
-            <div className="w-full border-t border-gray-100 mt-5 pt-5 space-y-3">
+            <div className="w-full border-t border-gray-100 dark:border-slate-700 mt-5 pt-5 space-y-3">
               {[
                 { label: 'Meals Planned', value: plannedMealsCount },
                 { label: 'Cart Items', value: cartItems.length },
                 { label: 'Member Since', value: '2024' },
               ].map((s) => (
                 <div key={s.label} className="flex justify-between text-sm">
-                  <span className="text-gray-500">{s.label}</span>
-                  <span className="font-bold text-gray-900">{s.value}</span>
+                  <span className="text-gray-500 dark:text-slate-400">{s.label}</span>
+                  <span className="font-bold text-gray-900 dark:text-slate-100">{s.value}</span>
                 </div>
               ))}
             </div>
@@ -174,15 +156,15 @@ const Profile = () => {
 
         {/* Right - Edit Info */}
         <div className="md:col-span-2 space-y-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-7 transition-colors">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">Personal Information</h3>
               <button
                 onClick={() => { setIsEditing(!isEditing); }}
                 className={`text-sm font-bold px-4 py-2 rounded-xl transition-colors ${
                   isEditing
-                    ? 'text-gray-600 bg-gray-100 hover:bg-gray-200'
-                    : 'text-orange-600 bg-orange-50 hover:bg-orange-100'
+                    ? 'text-gray-600 dark:text-slate-300 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600'
+                    : 'text-orange-600 bg-orange-50 dark:bg-[#2D1A0E] dark:text-orange-500 hover:bg-orange-100 dark:hover:bg-orange-900/30'
                 }`}
               >
                 {isEditing ? 'Cancel' : '✏️ Edit'}
@@ -192,26 +174,26 @@ const Profile = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1.5">Full Name</label>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-slate-400 mb-1.5">Full Name</label>
                   <input
                     type="text"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all disabled:opacity-60"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-60"
                     placeholder="Your full name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1.5">Email Address</label>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-slate-400 mb-1.5">Email Address</label>
                   <input
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all disabled:opacity-60"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-60"
                     placeholder="you@email.com"
                   />
                 </div>
@@ -219,40 +201,40 @@ const Profile = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1.5">Phone Number</label>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-slate-400 mb-1.5">Phone Number</label>
                   <input
                     type="tel"
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all disabled:opacity-60"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-60"
                     placeholder="+91 00000 00000"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1.5">City</label>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-slate-400 mb-1.5">City</label>
                   <input
                     type="text"
                     name="city"
                     value={form.city}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all disabled:opacity-60"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-60"
                     placeholder="Your city"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1.5">Bio</label>
+                <label className="block text-sm font-bold text-gray-700 dark:text-slate-400 mb-1.5">Bio</label>
                 <textarea
                   name="bio"
                   value={form.bio}
                   onChange={handleChange}
                   disabled={!isEditing}
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all resize-none disabled:opacity-60"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white dark:focus:bg-slate-800 transition-all resize-none disabled:opacity-60"
                   placeholder="Tell us about yourself..."
                 />
               </div>
@@ -269,13 +251,13 @@ const Profile = () => {
           </div>
 
           {/* Diet Preferences */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
-            <h3 className="text-xl font-bold text-gray-900 mb-5">🥗 Diet Preferences</h3>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-7 transition-colors">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100 mb-5">🥗 Diet Preferences</h3>
             <div className="flex flex-wrap gap-3">
               {['Vegetarian', 'High Protein', 'Low Calorie', 'South Indian', 'North Indian', 'Comfort Food'].map((pref) => (
                 <button
                   key={pref}
-                  className="px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-600 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                  className="px-4 py-2 rounded-full border border-gray-200 dark:border-slate-600 text-sm font-medium text-gray-600 dark:text-slate-300 hover:border-orange-300 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-[#2D1A0E] hover:text-orange-600 dark:hover:text-orange-500 transition-colors"
                 >
                   {pref}
                 </button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const SEO = ({ title, description, name, type }) => {
+const SEO = ({ title, description, name, type, schemaData }) => {
   return (
     <Helmet>
       {/* Standard metadata tags */}
@@ -21,6 +21,13 @@ const SEO = ({ title, description, name, type }) => {
       <meta name="twitter:title" content={title || 'MealNova - Premium Meal Delivery'} />
       <meta name="twitter:description" content={description || 'MealNova offers premium, healthy meal delivery services right to your doorstep.'} />
       {/* End Twitter tags */}
+
+      {/* Structured Data (Schema.org) */}
+      {schemaData && (
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
+      )}
     </Helmet>
   );
 };

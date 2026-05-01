@@ -13,7 +13,7 @@ const Home = () => {
         description="Discover amazing Indian recipes, plan your weekly meals, and get groceries sorted in one place."
       />
       {/* Hero Section */}
-      <section className="relative bg-orange-50 rounded-3xl overflow-hidden shadow-sm mt-6">
+      <section className="relative bg-orange-50 dark:bg-slate-800/50 rounded-3xl overflow-hidden shadow-sm mt-6 transition-colors">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-orange-200 opacity-50 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-yellow-200 opacity-50 blur-3xl"></div>
@@ -21,14 +21,14 @@ const Home = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 flex flex-col lg:flex-row items-center gap-10">
           <div className="lg:w-1/2 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 font-bold text-sm px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-[#2D1A0E] text-orange-700 dark:text-orange-400 font-bold text-sm px-4 py-2 rounded-full mb-6">
               <span>🍱</span> Smart Tiffin & Meal Planner
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight mb-6">
               Delicious Meals, <br />
               <span className="text-orange-600">Planned for You</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto lg:mx-0">
               Discover amazing Indian recipes, plan your weekly meals, and get groceries sorted in one place.
               Healthy eating — <strong>ghar jaisi</strong> — has never been easier.
             </p>
@@ -41,7 +41,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/planner"
-                className="px-8 py-4 bg-white text-orange-600 font-bold rounded-full hover:bg-orange-50 border-2 border-orange-200 transform hover:scale-105 transition-all shadow-sm text-lg"
+                className="px-8 py-4 bg-white dark:bg-slate-800 text-orange-600 font-bold rounded-full hover:bg-orange-50 dark:hover:bg-slate-700 border-2 border-orange-200 dark:border-slate-600 transform hover:scale-105 transition-all shadow-sm text-lg"
               >
                 Start Planning
               </Link>
@@ -56,7 +56,7 @@ const Home = () => {
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <p className="text-2xl font-extrabold text-orange-600">{s.val}</p>
-                  <p className="text-xs text-gray-500 font-medium">{s.label}</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 font-medium">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -97,8 +97,8 @@ const Home = () => {
       {/* Featured / Trending Section */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">🔥 Trending Recipes</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">🔥 Trending Recipes</h2>
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
             Our most loved meals this week — handpicked for taste, nutrition, and rave reviews.
           </p>
         </div>
@@ -106,7 +106,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredMeals.map((meal) => (
             <Link key={meal.id} to={`/meals/${meal.id}`} className="group">
-              <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
+              <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
                 <div className="h-52 relative overflow-hidden">
                   <img
                     src={meal.image}
@@ -130,9 +130,9 @@ const Home = () => {
                 </div>
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-bold text-gray-900 leading-tight flex-grow pr-2">{meal.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 leading-tight flex-grow pr-2">{meal.name}</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                  <p className="text-gray-500 dark:text-slate-400 text-sm mb-3 line-clamp-2">
                     {meal.cuisine} cuisine • {meal.calories} kcal • ₹{meal.price || Math.round(meal.calories/10)}
                   </p>
                   <div className="flex flex-wrap gap-1 mb-4">
@@ -143,7 +143,7 @@ const Home = () => {
                     ))}
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">{meal.category}</span>
+                    <span className="text-sm text-gray-500 dark:text-slate-400">{meal.category}</span>
                     <span className="text-orange-600 font-bold text-sm group-hover:underline">View Recipe →</span>
                   </div>
                 </div>
@@ -193,30 +193,30 @@ const Home = () => {
       {/* Testimonials */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">❤️ What Our Users Say</h2>
-          <p className="text-gray-600">Real stories from real foodies across India.</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">❤️ What Our Users Say</h2>
+          <p className="text-gray-600 dark:text-slate-400">Real stories from real foodies across India.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {MOCK_TESTIMONIALS.slice(0, 3).map((t) => (
-            <div key={t.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div key={t.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 mb-4">
                 <img
                   src={t.avatar}
                   alt={t.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-orange-100"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-orange-100 dark:border-orange-900"
                   onError={(e) => {
                     e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=FF6B35&color=fff`;
                   }}
                 />
                 <div>
-                  <p className="font-bold text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-500">{t.city}</p>
+                  <p className="font-bold text-gray-900 dark:text-slate-100">{t.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">{t.city}</p>
                 </div>
                 <div className="ml-auto text-yellow-500 font-bold text-sm">
                   {'★'.repeat(t.rating)}
                 </div>
               </div>
-              <p className="text-gray-600 text-sm leading-relaxed italic">"{t.text}"</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed italic">"{t.text}"</p>
             </div>
           ))}
         </div>

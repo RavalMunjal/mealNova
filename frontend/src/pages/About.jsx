@@ -36,14 +36,14 @@ const About = () => {
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-orange-100 rounded-full blur-3xl opacity-60"></div>
         </div>
-        <span className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-sm font-bold px-4 py-2 rounded-full mb-6">
+        <span className="inline-flex items-center gap-2 bg-orange-100 dark:bg-[#2D1A0E] text-orange-700 dark:text-orange-400 text-sm font-bold px-4 py-2 rounded-full mb-6">
           <span>🍱</span> Our Story
         </span>
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
           Healthy Eating, <br />
           <span className="text-orange-600">Made Simple.</span>
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
           MealNova was born from a simple idea — every student, hostel resident, and working professional
           deserves delicious, home-style Indian meals without the daily hassle of cooking.
           We bring authentic flavors straight to your door.
@@ -57,7 +57,7 @@ const About = () => {
           </Link>
           <Link
             to="/pricing"
-            className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl border-2 border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all hover:scale-105 shadow-sm"
+            className="px-8 py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 font-bold rounded-2xl border-2 border-gray-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-600 hover:text-orange-600 dark:hover:text-orange-400 transition-all hover:scale-105 shadow-sm"
           >
             View Plans
           </Link>
@@ -84,8 +84,8 @@ const About = () => {
       {/* Core Values */}
       <section className="mb-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-3">What We Stand For</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">Every decision we make is guided by these core principles.</p>
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">What We Stand For</h2>
+          <p className="text-gray-500 dark:text-slate-400 max-w-xl mx-auto">Every decision we make is guided by these core principles.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
@@ -93,51 +93,51 @@ const About = () => {
               icon: '🌿',
               title: 'Fresh Ingredients',
               desc: 'Every meal is prepared daily with locally sourced, fresh ingredients. No preservatives, no shortcuts — ever.',
-              color: 'bg-green-50 border-green-100',
-              iconBg: 'bg-green-100',
+              color: 'bg-green-50 dark:bg-slate-800 border-green-100 dark:border-slate-700',
+              iconBg: 'bg-green-100 dark:bg-slate-700',
             },
             {
               icon: '👨‍🍳',
               title: 'Expert Home Chefs',
               desc: 'Our team of trained home-style chefs ensures authentic regional flavors in every tiffin box delivered.',
-              color: 'bg-orange-50 border-orange-100',
-              iconBg: 'bg-orange-100',
+              color: 'bg-orange-50 dark:bg-slate-800 border-orange-100 dark:border-slate-700',
+              iconBg: 'bg-orange-100 dark:bg-slate-700',
             },
             {
               icon: '📦',
               title: 'On-Time Delivery',
               desc: 'Punctual delivery within scheduled time slots, every day. Because your schedule matters as much as your food.',
-              color: 'bg-blue-50 border-blue-100',
-              iconBg: 'bg-blue-100',
+              color: 'bg-blue-50 dark:bg-slate-800 border-blue-100 dark:border-slate-700',
+              iconBg: 'bg-blue-100 dark:bg-slate-700',
             },
             {
               icon: '💡',
               title: 'Smart Customization',
               desc: 'Swap meals, skip days, pause subscriptions — full control over what you eat and when.',
-              color: 'bg-purple-50 border-purple-100',
-              iconBg: 'bg-purple-100',
+              color: 'bg-purple-50 dark:bg-slate-800 border-purple-100 dark:border-slate-700',
+              iconBg: 'bg-purple-100 dark:bg-slate-700',
             },
             {
               icon: '🏷️',
               title: 'Transparent Pricing',
               desc: 'Clear, honest pricing with no hidden fees. Pay only for what you consume, cancel anytime.',
-              color: 'bg-yellow-50 border-yellow-100',
-              iconBg: 'bg-yellow-100',
+              color: 'bg-yellow-50 dark:bg-slate-800 border-yellow-100 dark:border-slate-700',
+              iconBg: 'bg-yellow-100 dark:bg-slate-700',
             },
             {
               icon: '♻️',
               title: 'Zero Food Waste',
               desc: 'Our real-time demand dashboard helps vendors prepare exact quantities, dramatically reducing food waste.',
-              color: 'bg-teal-50 border-teal-100',
-              iconBg: 'bg-teal-100',
+              color: 'bg-teal-50 dark:bg-slate-800 border-teal-100 dark:border-slate-700',
+              iconBg: 'bg-teal-100 dark:bg-slate-700',
             },
           ].map((val) => (
-            <div key={val.title} className={`rounded-2xl p-7 border ${val.color} hover:shadow-md transition-shadow`}>
-              <div className={`w-14 h-14 ${val.iconBg} rounded-2xl flex items-center justify-center text-3xl mb-5`}>
+            <div key={val.title} className={`rounded-2xl p-7 border ${val.color} hover:shadow-md transition-colors`}>
+              <div className={`w-14 h-14 ${val.iconBg} rounded-2xl flex items-center justify-center text-3xl mb-5 transition-colors`}>
                 {val.icon}
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">{val.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{val.desc}</p>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-3">{val.title}</h3>
+              <p className="text-gray-600 dark:text-slate-400 text-sm leading-relaxed">{val.desc}</p>
             </div>
           ))}
         </div>
@@ -170,14 +170,14 @@ const About = () => {
       {/* Team */}
       <section className="mb-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-3">Meet the Team</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">Meet the Team</h2>
+          <p className="text-gray-500 dark:text-slate-400 max-w-xl mx-auto">
             A passionate team of food lovers, tech builders, and operations experts working to transform how India eats.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {teamMembers.map((member) => (
-            <div key={member.name} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center hover:shadow-lg transition-shadow group">
+            <div key={member.name} className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-8 text-center hover:shadow-lg transition-all group">
               <div className="relative inline-block mb-5">
                 <img
                   src={member.avatar}
@@ -194,9 +194,9 @@ const About = () => {
                   {member.initials}
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">{member.name}</h3>
-              <p className="text-orange-600 font-semibold text-sm mb-3">{member.role}</p>
-              <p className="text-gray-500 text-sm leading-relaxed">{member.bio}</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">{member.name}</h3>
+              <p className="text-orange-600 dark:text-orange-400 font-semibold text-sm mb-3">{member.role}</p>
+              <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed">{member.bio}</p>
             </div>
           ))}
         </div>
@@ -205,15 +205,15 @@ const About = () => {
       {/* Testimonials */}
       <section className="mb-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-3">❤️ What Our Customers Say</h2>
-          <p className="text-gray-500">Real stories from real foodies across India.</p>
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">❤️ What Our Customers Say</h2>
+          <p className="text-gray-500 dark:text-slate-400">Real stories from real foodies across India.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {MOCK_TESTIMONIALS.map((t) => (
-            <div key={t.id} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col">
+            <div key={t.id} className="bg-white dark:bg-slate-800 rounded-2xl p-7 shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-md transition-all flex flex-col">
               <StarRating rating={t.rating} size="sm" />
-              <p className="text-gray-600 my-5 italic leading-relaxed flex-grow">"{t.text}"</p>
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+              <p className="text-gray-600 dark:text-slate-300 my-5 italic leading-relaxed flex-grow">"{t.text}"</p>
+              <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-slate-700">
                 <img
                   src={t.avatar}
                   alt={t.name}
@@ -223,8 +223,8 @@ const About = () => {
                   }}
                 />
                 <div>
-                  <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                  <p className="text-gray-400 text-xs">📍 {t.city}</p>
+                  <p className="font-bold text-gray-900 dark:text-slate-100 text-sm">{t.name}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-xs">📍 {t.city}</p>
                 </div>
               </div>
             </div>
@@ -233,10 +233,10 @@ const About = () => {
       </section>
 
       {/* CTA */}
-      <section className="bg-orange-50 rounded-3xl p-12 text-center border border-orange-100">
+      <section className="bg-orange-50 dark:bg-[#2D1A0E] rounded-3xl p-12 text-center border border-orange-100 dark:border-orange-900/50 transition-colors">
         <div className="text-5xl mb-4">🍱</div>
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Ready to eat better?</h2>
-        <p className="text-gray-600 mb-8 max-w-md mx-auto">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">Ready to eat better?</h2>
+        <p className="text-gray-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
           Join 10,000+ happy users enjoying fresh, authentic Indian meals every day.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -248,7 +248,7 @@ const About = () => {
           </Link>
           <Link
             to="/pricing"
-            className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl border-2 border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all text-lg inline-block"
+            className="px-8 py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 font-bold rounded-2xl border-2 border-gray-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-600 hover:text-orange-600 dark:hover:text-orange-400 transition-all text-lg inline-block"
           >
             See Pricing
           </Link>
